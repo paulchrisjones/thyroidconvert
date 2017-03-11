@@ -1,0 +1,163 @@
+<head>
+	<title>ThyroidConvert.com</title>
+	
+	<!--Meta tags-->
+	<meta charset="UTF-8">
+	<meta name="description" content="An online calculator for converting between different medications for hypothyroidism. Convert between Armour and levothyroxine, triiodothyronine and Thyroid-S, and many more!">
+	<meta name="keywords" content="hypothyroidism, converter, conversion, Armour, dose, dosage, levothyroxine">
+	<meta name="author" content="Paul Chris Jones">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<!--Stylesheets--->
+	<link rel="stylesheet" href="stylesheet.css">
+</head>
+
+<body>
+
+<!--Javascripts-->
+<script src="jquery-3.1.1.min.js"></script>
+<script src="calculator.js"></script>
+<script src="contact_me.js"></script>
+<script src="jqBootstrapValidation.js"></script> 
+<script src="numeral.min.js"></script> 
+	
+<!--Ladies and gentlemen, let the show begin-->
+<div id="calculator">
+	<!-- Headings -->
+	<h1>ThyroidConvert.com</h1>
+	<h2>A simple way to convert dosages between hypothroidism medications!</h2>
+
+	<!-- Dosage input box --> 
+	<input style="color:black" type="number" class="form-control" placeholder="Enter dosage" id="InputDosage" maxlength="10" oninput="ShowCalculation()">
+	 
+	<!-- Units dropdown box --> 
+	<select id="InputUnit" onchange="ShowCalculation()">
+		<option value="" selected disabled hidden>Select units</option>
+		<option value="mg/mcg" >mg/mcg</option>
+		<option value="grains">grains/pills/capsules</option>
+	</select>  
+
+	<!-- Medication dropdown box --> 
+	<select id="InputMedication" onchange="ShowCalculation()">
+		<option value="">Select medication to convert from</option>
+		<option value="Armour Thyroid">Armour Thyroid</option>
+		<option value="Eltroxin">Eltroxin</option>			
+		<option value="ERFA">ERFA</option>			
+		<option value="Euthyrox">Euthyrox-S</option>
+		<option value="Eutirox">Eltroxin</option>			
+		<option value="L-thyroxine">L-thyroxine</option>
+		<option value="Letrox">Letrox</option>
+		<option value="Levaxin">Levaxin</option>
+		<option value="Lévothyrox">Lévothyrox</option>		
+		<option value="Levothyroxine">Levothyroxine</option>
+		<option value="Levoxyl">Levoxyl</option>
+		<option value="Liothyronine sodium">Liothyronine sodium</option>		
+		<option value="Natural Sources Raw Thyroid">Natural Sources Raw Thyroid</option>
+		<option value="Nature-Throid">Nature-Throid</option>
+		<option value="NP Thyroid">NP Thyroid (a.k.a. Acella)</option>
+		<option value="Synthroid">Synthroid</option>
+		<option value="T3">T3</option>
+		<option value="T4">T4</option>
+		<option value="Thiroyd">Thiroyd</option>
+		<option value="Thyrax">Thyrax</option>
+		<option value="Thyrax Duotab">Thyrax Duotab</option>
+		<option value="Thyrin">Thyrin</option>
+		<option value="Thyro-Gold">Thyro-Gold</option>
+		<option value="Thyroid-S">Thyroid-S</option>
+		<option value="Thyrolar">Thyrolar</option>
+		<option value="Thyronorm">Thyronorm</option>
+		<option value="Thyrox">Thyrox</option>
+		<option value="Tirosint">Tirosint</option>
+		<option value="Triiodothyronine">Triiodothyronine</option>
+		<option value="Unithroid">Unithroid</option>
+		<option value="WP Thyroid">WP Thyroid (a.k.a. Westhroid-P)</option>
+		
+		<!-- to add 
+		<option value="Cytomel">Cytomel</option>
+		<option value="Cynomel">Cynomel</option>	
+		<option value="Tiromel">Tiromel</option>	
+		<option value="Tertroxin">Tertroxin</option>			
+		<option value="Triostat">Triostat</option>		
+		<option value="Liotir">Liotir</option>
+		<option value="ERFA">ERFA</option>		
+		-->
+		
+	</select>  
+	
+	<!-- Display the outcome of the calcultion here --->
+	<p id="output" style="display:none;"></p>
+	
+</div>	
+
+<!-- Extra options for the user -->
+<div id="info" style="margin-bottom:-10px;">
+	<p style="font-size:70%">
+		<span onclick="ShowOrHideBox('about')"><a>About</a></span> | 
+		<span onclick="ShowOrHideBox('assumptions')"><a>Assumptions</a></span> | 
+		<span onclick="ShowOrHideBox('donate')"><a>Donate</a></span> | 
+		<span onclick="ShowOrHideBox('contact')"><a>Report a problem</a></span> |
+		<span onclick="ShowOrHideBox('disclaimer')"><a>Disclaimer</a></span>
+	</p>
+</div>
+
+<!-- Box that shows the calculation's assumptions-->
+<div id="assumptions" class="extraInformation" style="display:none;">
+	<p style="margin-bottom:-32px;">The calculator assumes that:</p>
+	<ol>
+	<li>T3 is four times as potent than T4. [Sources: <a href="https://www.allergan.com/assets/pdf/armourthyroid_pi">1</a>, <a href="http://www.medsafe.govt.nz/Profs/Datasheet/l/Levothyroxinetab.pdf">2</a>]</li>
+	<li>Each 60 mg grain of Armour Thyroid, Thyroid-S and WP Thyroid contains 9 mcg of T3 and 38mcg of T4. [Sources: <a href="https://stopthethyroidmadness.com/armour-vs-other-brands/">1</a>, <a href="https://www.allergan.com/assets/pdf/armourthyroid_pi">2</a>]</li>
+	<li>Each 60 mg grain of Thiroyd and ERFA contains 8 mcg of T3 and 35 mcg of T4. [<a href="https://stopthethyroidmadness.com/armour-vs-other-brands/">Source</a>] </li>
+	<li>Each 65 mg grain of Nature-Throid and NP Thyroid contains 9 mcg of T3 and 38 mg of T4. [<a href="https://stopthethyroidmadness.com/armour-vs-other-brands/">Source</a>]</li>
+	<li>Each 300 mg capsule of Natural Sources Raw Thyroid contains 8 mcg of T3 and 32 mcg of T4. [<a href="http://www.pauljonesblog.com/2017/02/27/how-much-t3-and-t4-is-in-natural-sources-raw-thyroid/">Source</a></li>
+	<li>Each 150 mg capsule of Thyro-Gold contains 12.5 mcg of T3 and 50 mcg of T4. [<a href="http://www.pauljonesblog.com/2015/09/06/the-amount-of-t3-and-t4-in-thyro-gold/">Source</a>]</li>
+	<li>The brands Eltroxin, Euthyrox, Letrox, Levaxin, Lévothyrox, L-thyroxine, Thyrax, Thyrax Duotab, Thyrox, Thyronorm, Unithroid, Eutirox, Levoxyl, Synthroid, Tirosint, Thyrin, and Thyrolar are all bioequivalent with generic levothyroxine.</li>
+	</ol>
+</div>
+
+<!-- Box that shows copyright information, etc. -->
+<div id="about" class="extraInformation" style="display:none;">
+	<p>This calculator was created by me, Paul Chris Jones, in 2017. Here's my <a href="http://www.pauljonesblog.com">blog</a>.</p>
+	<p>Copyright © 2017 Paul Chris Jones. All rights reserved
+</div>
+
+<!-- Box where users can give a poor developer some monies -->
+<div id="donate" class="extraInformation" style="display:none;">
+	<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7GJ9X3H8VGRBG" target="_blank"><img style="display: block; margin: 0 auto;" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0"></img></a>
+</div>
+
+<!-- Box for the user to send a message to the developer -->
+<div id="contact" class="extraInformation" style="display:none;">
+	<form>
+		<!--Comment--> 
+		<div class="form-group">
+			<div class="col-md-4 inputGroupContainer">
+				<div class="input-group"> <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+					<textarea class="form-control" id="message" placeholder="Comment"></textarea>
+				</div>
+			</div>
+		</div>
+		<!--Email address--> 
+		<div class="form-group">
+			<div class="col-md-4 inputGroupContainer">
+				<div class="input-group"> <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
+					<input type="email" class="form-control" placeholder="Email Address" id="email" required data-validation-required-message="Please enter your email address.">
+					<p class="help-block text-danger"></p>
+				</div>
+			</div>
+		</div>
+		<!--Submit button and success message--> 
+		<div id="success"></div>
+		<div class="row">
+			<div class="form-group col-xs-12 text-center" style="width:25%;margin-left:auto;margin-right:auto;"> 
+				<button type="submit" id="submit">Send</button>
+			</div>
+		</div>
+	</form>
+</div>
+
+<div id="disclaimer" class="extraInformation" style="display:none;">
+	<p>By using this website, you agree that I will not be held responsible for any harm, damage or loss whatsoever that you suffer. <b>Information used is at your own risk.</b>
+	Furthermore, all information offered by this website is for reference only. I cannot guarantee that the information is accurate. 
+	The information should also not replace the advice of your doctor.</p>
+</body>
+<!-- That's all, folks -->
